@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools", "numpy", "Cython", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brainnetworkdynamics"
+version = "1.0.0"
+authors = [
+  { name="vlewir", email="levente.varga@ubbcluj.ro"},
+  { name="bpentek", email="balazs.pentek@ubbcluj.ro" },
+]
+description = "Functional brain network analysis protocol developed by Varga et al., 2024"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "igraph>=0.11.6",
+    "pandas>=2.2.2",
+    "scipy>=1.14.0",
+    "matplotlib>=3.9.2",
+    "cliffs_delta>=1.0.0"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/vlewir/BrainDynamics_STARProtocols"
+Issues = "https://github.com/vlewir/BrainDynamics_STARProtocols/issues"

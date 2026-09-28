@@ -31,9 +31,15 @@ conda create --name braindynamics_env python=3.12
 
 ### 2) Install package from PyPi
 
+Unlike the original `braindynamics-starprotocol` package, this one is not uploaded to PyPi. It can be installed locally by cloning this repository and using pip.
+
 ```
- pip install braindynamics-starprotocol
+cd ~
+git clone https://github.com/bpentek/BrainNetworkDynamics.git
+pip install .
 ```
+
+**NOTE:** You can use `pip install -e .` command for the package source file to be [editable](https://pip.pypa.io/en/stable/cli/pip_install).
 
 ### 3) Usage
 

@@ -91,25 +91,28 @@ class CrossCorrelogram():
 
         n_x = len(x)
         n_y = len(y)
-        if self.scale_size is not None: # SCA
-            # shifting x to the left, relative to y
-            for shift in range(-self.max_shift_size, 0):
-                self.corr_coeff_arr[shift + self.max_shift_size] = self._scaled_correlation(x[abs(shift):], y[:n_y - abs(shift)], use_fisher=use_fisher)
-            # zero shift
-            self.corr_coeff_arr[self.max_shift_size] = self._scaled_correlation(x, y, use_fisher=use_fisher)
-            # shifting x to the right, relative to y
-            for shift in range(1, self.max_shift_size + 1):
-                self.corr_coeff_arr[shift + self.max_shift_size] = self._scaled_correlation(x[:n_x - shift], y[shift:], use_fisher=use_fisher)
-        else: # CC
-            # shifting x to the left, relative to y
-            for shift in range(-self.max_shift_size, 0):
-                self.corr_coeff_arr[shift + self.max_shift_size] = _pearson_correlation(x[abs(shift):], y[:n_y - abs(shift)])
-            # zero shift
-            self.corr_coeff_arr[self.max_shift_size] = _pearson_correlation(x, y)
-            # shifting x to the right, relative to y
-            for shift in range(1, self.max_shift_size + 1):
-                self.corr_coeff_arr[shift + self.max_shift_size] = _pearson_correlation(x[:n_x - shift], y[shift:])
 
+        # Common interval
+        start = self.max_shift_size
+        end = min(n_x, n_y) - self.max_shift_size
+
+        if self.scale_size is not None: # SCA
+            # shifting x to the left/right relative to y
+            for shift in range(-self.max_shift_size, self.max_shift_size + 1):
+                self.corr_coeff_arr[shift + self.max_shift_size] = self._scaled_correlation(
+                    x[start:end],
+                    y[start + shift:end + shift],
+                    use_fisher=use_fisher
+                )
+
+        else: # CC
+            # shifting x relative to y
+            for shift in range(-self.max_shift_size, self.max_shift_size + 1):
+                self.corr_coeff_arr[shift + self.max_shift_size] = _pearson_correlation(
+                    x[start:end],
+                    y[start + shift:end + shift]
+                )
+    
     def _compute_cy(self, x:np.ndarray, y:np.ndarray, use_fisher:bool=True)->None:
         """
         Compute CC using cython implementation (recommended).
